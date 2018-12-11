@@ -14,12 +14,13 @@
 
 
 ## sometime...
+```bash
 echo "# api-stuff-201812" >> README.md
 git init
 git add README.md
 git commit -m "first commit"
 git remote add origin git@github.com:nealalan/api-stuff-201812.git
 git push -u origin master
-
+```
 
 [[edit](https://github.com/nealalan/api-stuff-201812/edit/master/README.md)]
