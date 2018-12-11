@@ -3,7 +3,7 @@
 ## Python Full Stack Playing Around
 ### Goals
 - not to hose up the system i'm on
-- *do it live d*mn it, i'll do it live* (that ref makes me laugh every time)
+- **do it live d\*mn it, i'll do it live** (that ref makes me laugh every time)
 - but really, I want to test out these API's on a domain/subdomain, not just on localhost
 - i get no enjoyment doing things on localhost
 - take the time to use virtualenv so I don't have to use **$ terraform** taint again
