@@ -1,4 +1,4 @@
-# [nealalan.github.io]/[api-stuff-2018-12]
+# [nealalan.github.io](https://nealalan.github.io)/[api-stuff-201812](https://nealalan.github.io/api-stuff-201812)
 
 ## Python Full Stack Playing Around
 ### Goals
@@ -20,3 +20,6 @@ git add README.md
 git commit -m "first commit"
 git remote add origin git@github.com:nealalan/api-stuff-201812.git
 git push -u origin master
+
+
+[[edit](https://github.com/nealalan/api-stuff-201812/edit/master/README.md)]
