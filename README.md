@@ -67,6 +67,19 @@ $ tee __init__.py << END
 > END
 $ cat __init__.py
 ```
+A sloppy but effective way to create our script. But it will work with python flask:
+```bash
+# Note: you're in your virtual env right?
+$ python __init__.py
+```
+And it worked... but not so lucky with gunicorn. :( I keep getting a wierd error.
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.10.53%20AM.jpg?raw=true)
+### Now, on to [gunicorn.org](https://gunicorn.org/)
+Apparently it is this simple. I tried it. Same error. I went into the code and thought, what did I do? 
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.06.32%20AM.jpg?raw=true)
+SPACING. I fixed the spacing and wham! Apparently gunicorn is really picky about code indenting!
+
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.16.34%20AM.jpg?raw=true)
 
 ## sometime...
 ```bash
