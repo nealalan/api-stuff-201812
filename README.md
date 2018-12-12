@@ -32,14 +32,41 @@ The following NEW packages will be installed:
 We installed virtualenv and pip to handle our application dependencies. 
 ```bash
 $ pip3 install --upgrade pip setuptools
-$ mkdir Projects
-$ python3 -m venv Projects/flask1804
-$ source ~/Projects/flask1804/bin/activate
+$ mkdir venvs Projects 
+$ python3 -m venv venvs/flask1804
+$ source ~/venvs/flask1804/bin/activate
 ```
 We are now safe to install within the virtual environments /bin and /lib w/out hosing up PROD
-![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-10%20at%2010.58.08%20PM.jpg?raw=true)
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-10%20at%2011.17.07%20PM.jpg?raw=true)
 ### TOOLS in Virtual Env Project
-
+- So from now on, our primary package manager will be PIP and wheel?! Keep that in mind...
+- [Flask](http://flask.pocoo.org/docs/1.0/) = Python micro framework for building web applications.
+- [Gunnison](https://gunicorn.org/) -  'Green Unicorn' is a Python WSGI HTTP Server for UNIX
+```bash
+$ pip install --upgrade pip
+$ pip install wheel
+$ pip install flask gunicorn
+```
+- Now lets test out the env. We are going to create a file from the command line using the tee command...
+```bash
+$ cd ~/Projects
+$ mkdir flask1804
+$ cd flask1804
+$ tee __init__.py << END
+> from flask import Flask, Response
+>
+>
+> app = Flask(__name__)
+>
+> @app.route("/")
+> def index():
+>     return Response("It works!"), 200
+>
+> if __name__ == "__main__":
+>     app.run(debug=True)
+> END
+$ cat __init__.py
+```
 
 ## sometime...
 ```bash
