@@ -77,8 +77,9 @@ And it worked... but not so lucky with gunicorn. :( I keep getting a wierd error
 ### Now, on to [gunicorn.org](https://gunicorn.org/)
 Apparently it is this simple. I tried it. Same error. I went into the code and thought, what did I do? 
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.06.32%20AM.jpg?raw=true)
-SPACING. I fixed the spacing and wham! Apparently gunicorn is really picky about code indenting!
-
+SPACING. I fixed the spacing and wham! Apparently gunicorn is really picky about code indenting! 
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.20.59%20AM.jpg?raw=true)
+When I $ cat the file, it's a bit less indented. Maybe this is the reason, maybe not. But it.... worked.
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.16.34%20AM.jpg?raw=true)
 
 ## sometime...
