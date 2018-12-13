@@ -149,6 +149,10 @@ Now we have NGINX all configured, we can go ahead and restart and verify it.
 $ sudo systemctl restart nginx
 $ sudo nginx -t
 ```
+Add a launch script
+
+
+
 
 
 ## sometime...
