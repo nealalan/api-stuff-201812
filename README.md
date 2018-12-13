@@ -82,6 +82,16 @@ SPACING. I fixed the spacing and wham! Apparently gunicorn is really picky about
 When I $ cat the file, it's a bit less indented. Maybe this is the reason, maybe not. But it.... worked.
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.16.34%20AM.jpg?raw=true)
 
+### What is this gunicorn?
+- Web Server Gateway Interface (WSGI) - a simple calling convention for web servers to forward requests to web applications or frameworks written in the Python 
+- The more I looked into Gunicorn, it seems it's pretty meatless. Not a lot to it and it has to be used with other tool such as Django.
+- Setting up gunicorn to work from the internet appears to be a challenge. I haven't found any comprenensive labs, but found [a doc on it](https://media.readthedocs.org/pdf/gunicorn-docs/latest/gunicorn-docs.pdf).
+- But after a few hours of reading, it really doesn't tell you squat about how it's working and gives an nginx.conf that has inadequate documentation/comments. 
+
+### [Deploying A Flask RESTPlus API to AWS EC2](https://medium.com/@isaacndungu/deploying-a-flask-restplus-api-to-aws-ec2-5061450fdc56)
+
+
+
 ## sometime...
 ```bash
 echo "# api-stuff-201812" >> README.md
