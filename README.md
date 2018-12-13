@@ -89,7 +89,66 @@ When I $ cat the file, it's a bit less indented. Maybe this is the reason, maybe
 - But after a few hours of reading, it really doesn't tell you squat about how it's working and gives an nginx.conf that has inadequate documentation/comments. 
 
 ### [Deploying A Flask RESTPlus API to AWS EC2](https://medium.com/@isaacndungu/deploying-a-flask-restplus-api-to-aws-ec2-5061450fdc56)
-
+- Phase 1: setup your AWS Ubuntu Instance. (Warning sign 1 - Ubuntu 16 vs 18. We will see.)
+- Phase 2: automatic deployment?
+```bash
+# Step 1: Clone the automation scripts
+$ git clone -b deploy-automation https://github.com/indungu/devops-08.git setup/
+# Step 2: Run the deployment script
+# on second thought lets look at it first
+```
+So this script would have hosed my webserver. I'll scrape the deploy-backend.sh and pull what I need from it.
+```bash
+# new venv
+$ python3 -m venv venvs/api
+$ source ~/venvs/api/bin/activate
+#
+# Installing App dependencies and Env Variables
+$ git clone -b develop https://github.com/indungu/yummy-rest.git ~/Projectrs/yummy-rest
+$ pip install -r ~/Projects/yummy-rest/requirements.txt
+```
+Naturally, a bunch of the installs failed. Damnit. Every. Lab. Ever! Welcome to IT, right? It appears the install just failed to build wheels for everything using.
+```bash
+$ pip check
+# everything appears to be okay... but just to be sure:
+$ sudo apt update
+$ sudo apt upgrade
+```
+Now we need to create an environmental variables file. I think this is where everything here might fall apart.
+```bash
+$ sudo cat > ~/Projects/.env << EOF
+    export DATABASE_URL="postgres://budufkitteymek:095f0029056c313190744c68ca69d19a2e315483bc41e059b40d6d9fdccf2599@ec2-107-22-229-213.compute-1.amazonaws.com:5432/d2r8p5ai580nqq"
+    export APP_CONFIG="production"
+    export SECRET_KEY="mYd3rTyL!tTl#sEcR3t"
+    export FLASK_APP=run.py
+EOF
+$ source ~/Projects/.env
+```
+Create a new nginx.conf for this project... not clobering what I already have installed.
+```bash
+$ sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/fire.neonaluminum.com
+server {
+        listen 80;
+        listen [::]:80;
+        server_name fire.neonaluminum.com;
+        location / {
+                # reverse proxy and serve the app
+                # running on the localhost:8000
+                proxy_pass http://127.0.0.1:8000/;
+                proxy_set_header HOST \$host;
+                proxy_set_header X-Forwarded-Proto \$scheme;
+                proxy_set_header X-Real-IP \$remote_addr;
+                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        }
+}
+EOF'
+$ sudo ln -s /etc/nginx/sites-available/fire.neonaluminum.com /etc/nginx/sites-enabled/
+```
+Now we have NGINX all configured, we can go ahead and restart and verify it.
+```bash
+$ sudo systemctl restart nginx
+$ sudo nginx -t
+```
 
 
 ## sometime...
