@@ -19,6 +19,7 @@ $ sudo apt-get install python3-dev python3-pip python3-virtualenv
 # Note for some reason we have to separately install python3-venv
 $ sudo apt-get install python3-venv
 ```
+
 The following NEW packages will be installed:
 - binutils binutils-common binutils-x86-64-linux-gnu build-essential cpp cpp-7 dh-python dpkg-dev fakeroot g++ g++-7
   gcc gcc-7 gcc-7-base libalgorithm-diff-perl libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan4 libatomic1
@@ -30,24 +31,31 @@ The following NEW packages will be installed:
 The following NEW packages will be installed:
 - python3-venv python3.6-venv
 We installed virtualenv and pip to handle our application dependencies. 
+
 ```bash
 $ pip3 install --upgrade pip setuptools
 $ mkdir venvs Projects 
 $ python3 -m venv venvs/flask1804
 $ source ~/venvs/flask1804/bin/activate
 ```
+
 We are now safe to install within the virtual environments /bin and /lib w/out hosing up PROD
+
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-10%20at%2011.17.07%20PM.jpg?raw=true)
+
 ### TOOLS in Virtual Env Project
 - So from now on, our primary package manager will be PIP and wheel?! Keep that in mind...
 - [Flask](http://flask.pocoo.org/docs/1.0/) = Python micro framework for building web applications.
 - [Gunnison](https://gunicorn.org/) -  'Green Unicorn' is a Python WSGI HTTP Server for UNIX
+
 ```bash
 $ pip install --upgrade pip
 $ pip install wheel
 $ pip install flask gunicorn
 ```
+
 - Now lets test out the env. We are going to create a file from the command line using the tee command...
+
 ```bash
 $ cd ~/Projects
 $ mkdir flask1804
@@ -67,19 +75,28 @@ $ tee __init__.py << END
 > END
 $ cat __init__.py
 ```
+
 A sloppy but effective way to create our script. But it will work with python flask:
+
 ```bash
 # Note: you're in your virtual env right?
 $ python __init__.py
 ```
 And it worked... but not so lucky with gunicorn. :( I keep getting a wierd error.
+
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.10.53%20AM.jpg?raw=true)
+
 ### Now, on to [gunicorn.org](https://gunicorn.org/)
 Apparently it is this simple. I tried it. Same error. I went into the code and thought, what did I do? 
+
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.06.32%20AM.jpg?raw=true)
+
 SPACING. I fixed the spacing and wham! Apparently gunicorn is really picky about code indenting! 
+
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.20.59%20AM.jpg?raw=true)
+
 When I $ cat the file, it's a bit less indented. Maybe this is the reason, maybe not. But it.... worked.
+
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-12%20at%2012.16.34%20AM.jpg?raw=true)
 
 ### What is this gunicorn?
