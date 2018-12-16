@@ -91,13 +91,16 @@ When I $ cat the file, it's a bit less indented. Maybe this is the reason, maybe
 ## [Deploying A Flask RESTPlus API to AWS EC2](https://medium.com/@isaacndungu/deploying-a-flask-restplus-api-to-aws-ec2-5061450fdc56)
 - Phase 1: setup your AWS Ubuntu Instance. (Warning sign 1 - Ubuntu 16 vs 18. We will see.)
 - Phase 2: automatic deployment?
+
 ```bash
 # Step 1: Clone the automation scripts
 $ git clone -b deploy-automation https://github.com/indungu/devops-08.git setup/
 # Step 2: Run the deployment script
 # on second thought lets look at it first
 ```
+
 So this script would have hosed my webserver. I'll scrape the deploy-backend.sh and pull what I need from it.
+
 ```bash
 # new venv
 $ python3 -m venv venvs/api
@@ -107,14 +110,18 @@ $ source ~/venvs/api/bin/activate
 $ git clone -b develop https://github.com/indungu/yummy-rest.git ~/Projectrs/yummy-rest
 $ pip install -r ~/Projects/yummy-rest/requirements.txt
 ```
+
 Naturally, a bunch of the installs failed. Damnit. Every. Lab. Ever! Welcome to IT, right? It appears the install just failed to build wheels for everything using.
+
 ```bash
 $ pip check
 # everything appears to be okay... but just to be sure:
 $ sudo apt update
 $ sudo apt upgrade
 ```
+
 Now we need to create an environmental variables file. I think this is where everything here might fall apart.
+
 ```bash
 $ sudo cat > ~/Projects/.env << EOF
     export DATABASE_URL="postgres://budufkitteymek:095f0029056c313190744c68ca69d19a2e315483bc41e059b40d6d9fdccf2599@ec2-107-22-229-213.compute-1.amazonaws.com:5432/d2r8p5ai580nqq"
@@ -124,8 +131,10 @@ $ sudo cat > ~/Projects/.env << EOF
 EOF
 $ source ~/Projects/.env
 ```
+
 ### Configure NGINX
 Create a new nginx.conf for this project... not clobering what I already have installed.
+
 ```bash
 $ sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/fire.neonaluminum.com
 server {
@@ -145,23 +154,31 @@ server {
 EOF'
 $ sudo ln -s /etc/nginx/sites-available/fire.neonaluminum.com /etc/nginx/sites-enabled/
 ```
+
 Now we have NGINX all configured, we can go ahead and restart and verify it.
+
 ```bash
 $ sudo systemctl restart nginx
 $ sudo nginx -t
 ```
+
 Sometimes I have a hell of a time getting this to work. NGINX won't die. So I have to
+
 ```bash
 $ ps aux | grep 'nginx'
 # find the PID for nginx
 $ sudo kill <pid>
 ```
+
 Run certbot to reginster the domain name you're using if you're using one. I needed to expand my certs for my server. I was using https://fire.neonaluminum.com 
+
 ```bash
 $ sudo certbot --authenticator standalone --installer nginx -d nealalan.com -d www.nealalan.com -d neonaluminum.com -d www.neonaluminum.com -d fire.neonaluminum.com --post-hook 'sudo service nginx start' -m neal@nealalan.com --agree-tos --eff-email --redirect -q --expand
 ```
+
 ### Launch the yummy-rest service
 Add a launch script...
+
 ```bash
 $ sudo cat > /home/ubuntu/Projects/launch.sh <<EOF
 #!/bin/bash
@@ -196,7 +213,9 @@ Somehow I got it to work...
 - Clear the cookies!
 
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.16.25%20PM.jpg?raw=true)
+
 ### I need a DB to use the API...
+
 ```bash
 $ sudo apt update
 $ sudo apt -y upgrade
@@ -205,7 +224,9 @@ $ source ~/venvs/api/bin/activate
 $ sudo apt install postgresql-client-common
 $ sudo apt install postgresql
 ```
+
 Output from the install was...
+
 ```bash
 $ /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
 ```
@@ -214,14 +235,18 @@ Now, using postgres...
 $ sudo -u postgres psql
 ```
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.38.06%20PM.jpg?raw=true)
+
 That let me in but I don't know where the SQL database is. So I did a locate:
+
 ```bash
 $ locate yummy_rest_db
 ```
+
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.43.42%20PM.jpg?raw=true)
 
-[Database setup](https://github.com/indungu/yummy-rest#database-setup)
+### [Database setup](https://github.com/indungu/yummy-rest#database-setup)
 Coming back to it the next day with fresh eyes, I checked to see if postgres was running. It is. 
+
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-16%20at%2013.41.02.jpg?raw=true)
 
 ```bash
