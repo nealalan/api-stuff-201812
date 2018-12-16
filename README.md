@@ -149,9 +149,50 @@ Now we have NGINX all configured, we can go ahead and restart and verify it.
 $ sudo systemctl restart nginx
 $ sudo nginx -t
 ```
-Add a launch script
+Sometimes I have a hell of a time getting this to work. NGINX won't die. So I have to
+```bash
+$ ps aux | grep 'nginx'
+# find the PID for nginx
+$ sudo kill <pid>
+```
+Run certbot to reginster the domain name you're using if you're using one. I needed to expand my certs for my server. I was using https://fire.neonaluminum.com 
+```bash
+$ sudo certbot --authenticator standalone --installer nginx -d nealalan.com -d www.nealalan.com -d neonaluminum.com -d www.neonaluminum.com -d fire.neonaluminum.com --post-hook 'sudo service nginx start' -m neal@nealalan.com --agree-tos --eff-email --redirect -q --expand
+```
+Add a launch script...
+```bash
+$ sudo cat > /home/ubuntu/Projects/launch.sh <<EOF
+#!/bin/bash
+cd ~/Projects/yummy-rest
+source ~/Projects/.env
+source ~/venvs/api/bin/activate
+gunicorn app:APP -D
+$ sudo chmod 744 /home/ubuntu/Projects/launch.sh
+```
 
+Configuration startup service...
+```bash
+$ sudo bash -c 'cat > /etc/systemd/system/yummy-rest.service <<EOF
+[Unit]
+Description=yummy-rest startup service
+After=network.target
+[Service]
+User=ubuntu
+ExecStart=/bin/bash /home/ubuntu/Projects/launch.sh
+[Install]
+WantedBy=multi-user.target
+EOF'
+$ sudo chmod 664 /etc/systemd/system/yummy-rest.service
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable yummy-rest.service
+$ sudo systemctl start yummy-rest.service
+$ sudo service yummy-rest status
+$ sudo ~/Projects/launch.sh
+```
+Somehow I got it to work...
 
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.16.25%20PM.jpg?raw=true)
+### And the DB so you can use the API...
 
 
 
