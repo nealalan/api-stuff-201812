@@ -88,7 +88,7 @@ When I $ cat the file, it's a bit less indented. Maybe this is the reason, maybe
 - Setting up gunicorn to work from the internet appears to be a challenge. I haven't found any comprenensive labs, but found [a doc on it](https://media.readthedocs.org/pdf/gunicorn-docs/latest/gunicorn-docs.pdf).
 - But after a few hours of reading, it really doesn't tell you squat about how it's working and gives an nginx.conf that has inadequate documentation/comments. 
 
-### [Deploying A Flask RESTPlus API to AWS EC2](https://medium.com/@isaacndungu/deploying-a-flask-restplus-api-to-aws-ec2-5061450fdc56)
+## [Deploying A Flask RESTPlus API to AWS EC2](https://medium.com/@isaacndungu/deploying-a-flask-restplus-api-to-aws-ec2-5061450fdc56)
 - Phase 1: setup your AWS Ubuntu Instance. (Warning sign 1 - Ubuntu 16 vs 18. We will see.)
 - Phase 2: automatic deployment?
 ```bash
@@ -124,6 +124,7 @@ $ sudo cat > ~/Projects/.env << EOF
 EOF
 $ source ~/Projects/.env
 ```
+### Configure NGINX
 Create a new nginx.conf for this project... not clobering what I already have installed.
 ```bash
 $ sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/fire.neonaluminum.com
@@ -159,6 +160,7 @@ Run certbot to reginster the domain name you're using if you're using one. I nee
 ```bash
 $ sudo certbot --authenticator standalone --installer nginx -d nealalan.com -d www.nealalan.com -d neonaluminum.com -d www.neonaluminum.com -d fire.neonaluminum.com --post-hook 'sudo service nginx start' -m neal@nealalan.com --agree-tos --eff-email --redirect -q --expand
 ```
+### Launch the yummy-rest service
 Add a launch script...
 ```bash
 $ sudo cat > /home/ubuntu/Projects/launch.sh <<EOF
@@ -190,9 +192,11 @@ $ sudo service yummy-rest status
 $ sudo ~/Projects/launch.sh
 ```
 Somehow I got it to work...
+- One issue I ran into was Chrome would not load the page because of cross-site scripting errors.
+- Clear the cookies!
 
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.16.25%20PM.jpg?raw=true)
-### And the DB so you can use the API...
+### I need a DB to use the API...
 ```bash
 $ sudo apt update
 $ sudo apt -y upgrade
@@ -217,6 +221,9 @@ $ locate yummy_rest_db
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.43.42%20PM.jpg?raw=true)
 
 [Database setup](https://github.com/indungu/yummy-rest#database-setup)
+Coming back to it the next day with fresh eyes, I checked to see if postgres was running. It is. 
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-16%20at%2013.41.02.jpg?raw=true)
+
 ```bash
 # can't see to get user to work...
 
