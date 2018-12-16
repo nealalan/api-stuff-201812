@@ -193,7 +193,34 @@ Somehow I got it to work...
 
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.16.25%20PM.jpg?raw=true)
 ### And the DB so you can use the API...
+```bash
+$ sudo apt update
+$ sudo apt -y upgrade
+$ cd ~/Projects
+$ source ~/venvs/api/bin/activate
+$ sudo apt install postgresql-client-common
+$ sudo apt install postgresql
+```
+Output from the install was...
+```bash
+$ /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
+```
+Now, using postgres...
+```bash
+$ sudo -u postgres psql
+```
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.38.06%20PM.jpg?raw=true)
+That let me in but I don't know where the SQL database is. So I did a locate:
+```bash
+$ locate yummy_rest_db
+```
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-15%20at%208.43.42%20PM.jpg?raw=true)
 
+[Database setup](https://github.com/indungu/yummy-rest#database-setup)
+```bash
+# can't see to get user to work...
+
+```
 
 
 ## sometime...
