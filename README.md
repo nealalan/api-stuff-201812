@@ -299,14 +299,56 @@ $ sudo nano /etc/postgresql/10/main/pg_hba.confq
 > \dS
 # List of users
 > \du
+# Connect from the postgres db to the yummy-rest-db
+> \c yummy-rest-db
 # quit
 > \q
 ```
+
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-16%20at%206.51.11%20PM.jpg?raw=true
+
 Add users
 ```user
 > CREATE USER new_username;
 > ALTER USER new_username SUPERUSER CREATEDB;
 ```
+
+### Front end stuff
+```bash
+# Install NodeJS and NPM
+$ sudo curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
+$ sudo bash nodesource_setup.sh
+$ sudo apt-get install -y nodejs
+# Clone App Repo
+$ git clone -b develop https://github.com/indungu/yummy-react.git ~/Projects/yummy-react
+# Setup app
+$ sudo npm install --global yarn
+$ sudo yarn install
+$ sudo yarn build production
+```
+Create an NGINX config
+```bash
+sudo bash -c 'cat > /etc/nginx/sites-available/yummyreact << EOF
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name _;
+        location / {
+                # reverse proxy and serve the app
+                # running on the localhost:3000
+                proxy_pass http://127.0.0.1:3000/;
+                proxy_set_header HOST \$host;
+                proxy_set_header X-Forwarded-Proto \$scheme;
+                proxy_set_header X-Real-IP \$remote_addr;
+                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        }
+}'
+```
+
+### Yummy REST API use
+
+#### POST /auth/register
+
 
 ## sometime...
 ```bash
