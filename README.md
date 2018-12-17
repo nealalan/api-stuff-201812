@@ -266,11 +266,47 @@ Coming back to it the next day with fresh eyes, I checked to see if postgres was
 
 ![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-16%20at%2013.41.02.jpg?raw=true)
 
-```bash
-# can't see to get user to work...
+I seem to be having an issue connecting to the database. I found a [stackoverflow post](https://stackoverflow.com/questions/16973018/createuser-could-not-connect-to-database-postgres-fatal-role-tom-does-not-e) about this issue.
 
+```bash
+# CREATE A USER
+$ sudo -u postgres createuser ubuntu
+# CREATE A DB
+$ sudo -u postgres createdb -O ubuntu yummy-rest-db
+# ENTER POSTGRES DATABASE yummy-rest-db
+$ psql yummy-rest-db
 ```
 
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-16%20at%206.51.11%20PM.jpg?raw=true)
+
+I still need to create a password for the user postgres
+```bash
+$ sudo nano /etc/postgresql/10/main/pg_hba.conf
+# Change the "host  all  all  127.0.0.1/32  md5"
+#    line to "host  all  all  127.0.0.1/32  trust"
+$ sudo service postgresql restart
+# log into psql and set the postgres user password
+$ psql -h 127.0.0.1 -U postgres
+> \password
+# change the line back!!!!!!
+$ sudo nano /etc/postgresql/10/main/pg_hba.confq
+```
+[PostgreSQL 10.6 Documentation](https://www.postgresql.org/docs/10/index.html) - Figuring out how to use postgres...
+```bash
+# List of databases
+> \l
+# List of tables, views and sequences
+> \dS
+# List of users
+> \du
+# quit
+> \q
+```
+Add users
+```user
+> CREATE USER new_username;
+> ALTER USER new_username SUPERUSER CREATEDB;
+```
 
 ## sometime...
 ```bash
