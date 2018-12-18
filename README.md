@@ -332,7 +332,7 @@ $ sudo npm install --global yarn
 $ sudo yarn install
 $ sudo yarn build production
 ```
-Create an NGINX config
+Create an NGINX config (I actually added this to my existing fire.neonaluminum.com config and the same server block with "location /api/")
 ```bash
 sudo bash -c 'cat > /etc/nginx/sites-available/yummyreact << EOF
 server {
@@ -350,6 +350,47 @@ server {
         }
 }'
 ```
+
+Launch the yummy frontend service...
+
+```bash
+$ sudo bash -c 'cat > ~/launch.sh << EOF
+#!/bin/bash
+cd ~/Projects/yummy-react
+yarn start
+'EOF
+$ sudo chmod +x ~/launch.sh
+```
+
+```bash
+$ sudo bash -c 'cat > /etc/systemd/system/yummy.service <<EOF
+[Unit]
+Description=yummy-react launch service
+After=network.target
+[Service]
+User=ubuntu
+ExecStart=/bin/bash ~/Projects/launch-frontend.sh
+Restart=always
+[Install]
+WantedBy=multi-user.target
+'EOF
+```
+
+```bash
+$ sudo chmod 664 /etc/systemd/system/yummy.service
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable yummy.service
+$ sudo systemctl start yummy.service
+```
+
+I ended up changing this over to ozark.neonaluminum because I wanted to seperate out the yummy-rest from the yummy-react. Once I did this I finally figured out how to launch the site.
+
+```bash
+$ sudo yarn build
+$ sudo yarn global add serve
+$ sudo serve -s build -l 3000
+```
+
 
 ### Yummy REST API use
 
