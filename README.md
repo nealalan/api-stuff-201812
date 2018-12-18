@@ -386,10 +386,25 @@ $ sudo systemctl start yummy.service
 I ended up changing this over to ozark.neonaluminum because I wanted to seperate out the yummy-rest from the yummy-react. Once I did this I finally figured out how to launch the site.
 
 ```bash
+$ sudo yarn install
+$ sudo yarn start 
+```
+
+To start a build
+
+```bash
 $ sudo yarn build
 $ sudo yarn global add serve
 $ sudo serve -s build -l 3000
 ```
+
+The issue is, it's not running in the background.
+
+```bash
+$ sudo yarn global add deploy
+$
+```
+
 
 
 ### Yummy REST API use
