@@ -206,7 +206,7 @@ gunicorn app:APP -D
 $ sudo chmod 744 /home/ubuntu/Projects/launch.sh
 ```
 
-Configuration startup service...
+Configuration startup service creation...
 ```bash
 $ sudo bash -c 'cat > /etc/systemd/system/yummy-rest.service <<EOF
 [Unit]
@@ -219,12 +219,18 @@ ExecStart=/bin/bash /home/ubuntu/Projects/launch.sh
 WantedBy=multi-user.target
 EOF'
 $ sudo chmod 664 /etc/systemd/system/yummy-rest.service
+```
+
+Start the yummy-rest api
+
+```bash
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable yummy-rest.service
 $ sudo systemctl start yummy-rest.service
 $ sudo service yummy-rest status
 $ sudo ~/Projects/launch.sh
 ```
+
 Somehow I got it to work...
 - One issue I ran into was Chrome would not load the page because of cross-site scripting errors.
 - Clear the cookies!
