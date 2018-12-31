@@ -402,14 +402,37 @@ The issue is, it's not running in the background.
 
 ```bash
 $ sudo yarn global add deploy
-$
 ```
 
 
+## [Secure REST API in NodeJS](https://www.toptal.com/nodejs/secure-rest-api-in-nodejs)
 
-### Yummy REST API use
+1. [Install NodeJS on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-18-04)
 
-#### POST /auth/register
+At this time, Node v8.15.0 is installed. to install the latest, the instructues will tell you how. 
+
+```bash
+$ sudo apt update && sudo apt install -y nodejs
+# install node package manager (npm)
+$ sudo apt install npm
+# see the version
+$ nodejs -v
+```
+
+2. Install MongoDB
+
+  - mongo-tools/bionic 3.6.3-0ubuntu1 amd64
+    collection of tools for administering MongoDB servers
+  - mongodb/bionic 1:3.6.3-0ubuntu1 amd64
+    object/document-oriented database (metapackage)
+  - mongodb-clients/bionic 1:3.6.3-0ubuntu1 amd64
+    object/document-oriented database (client apps)
+  - mongodb-server/bionic 1:3.6.3-0ubuntu1 all
+    object/document-oriented database (managed server package)
+  - mongodb-server-core/bionic 1:3.6.3-0ubuntu1 amd64
+    object/document-oriented database (server binaries package)
+
+
 
 
 ## sometime...
