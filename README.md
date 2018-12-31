@@ -525,8 +525,74 @@ ASSUMPTIONS
 - Ubuntu 16.04 server, configured with a non-root user with sudo privileges
 - domain name pointed at your server's public IP
 - Nginx configured with SSL using Let's Encrypt
+- you've completed the prerequisites you will have a server serving the default Nginx placeholder page at https://example.com/
 
-1. 
+1. Install Node.js
+
+2. Create Node.js Application
+
+- First, create and open your Node.js application for editing. 
+- For this tutorial, we will use nano to edit a sample application called hello.js.
+- Insert the following code into the file. If you want to, you may replace the highlighted port, 8080, in both locations (be sure to use a non-admin port, i.e. 1024 or greater).
+
+```js
+#!/usr/bin/env nodejs
+var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World\n');
+}).listen(8080, 'localhost');
+console.log('Server running at http://localhost:8080/');
+```
+- This Node.js application simply listens on the specified address (localhost) and port (8080), and returns "Hello World" with a 200 HTTP success code. 
+- Since we're listening on localhost, remote clients won't be able to connect to our application.
+
+3. Test application
+
+```bash
+$ chmod +x ./hello.js
+$ ./hello.js
+```
+
+In another window...
+```bash
+curl http://localhost:8080
+```
+
+Once you're sure it's working, kill the application (if you haven't already) by pressing Ctrl+C.
+
+4. Install [PM2](https://pm2.io)
+
+- PM2 is a process manager for Node.js applications. 
+- PM2 provides an easy way to manage and daemonize applications (run them in the background as a service).
+- Use npm, a package manager for Node modules that installs with Node.js, to install PM2 on our server.
+
+```bash
+$ sudo npm install -g pm2
+```
+
+5. Start Application with PM2
+
+The first thing you will want to do is use the pm2 start command to run your application, hello.js, in the background.
+
+```bash
+$ pm2 start hello.js
+```
+About PM2:
+                Start and Daemonize any application:
+                $ pm2 start app.js
+
+                Load Balance 4 instances of api.js:
+                $ pm2 start api.js -i 4
+
+                Monitor in production:
+                $ pm2 monitor
+
+                Make pm2 auto-boot at server restart:
+                $ pm2 startup
+
+                To go further checkout:
+                http://pm2.io/
 
 ## sometime...
 ```bash
