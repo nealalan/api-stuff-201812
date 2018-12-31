@@ -404,8 +404,7 @@ The issue is, it's not running in the background.
 $ sudo yarn global add deploy
 ```
 
-
-## [Secure REST API in NodeJS](https://www.toptal.com/nodejs/secure-rest-api-in-nodejs)
+## **TOTAL CRAP** [Secure REST API in NodeJS](https://www.toptal.com/nodejs/secure-rest-api-in-nodejs)
 
 1. [Install NodeJS on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-18-04)
 
@@ -421,6 +420,9 @@ $ nodejs -v
 
 2. Install MongoDB
 
+```bash
+$ sudo apt install mongodb
+```
   - mongo-tools/bionic 3.6.3-0ubuntu1 amd64
     collection of tools for administering MongoDB servers
   - mongodb/bionic 1:3.6.3-0ubuntu1 amd64
@@ -432,8 +434,99 @@ $ nodejs -v
   - mongodb-server-core/bionic 1:3.6.3-0ubuntu1 amd64
     object/document-oriented database (server binaries package)
 
+3. Create a folder that we’ll be using for our project and create the package.json file for the project.
 
+```bash
+$ cd Projects
+$ mkdir simple-rest-api
+$ cd simple-rest-api
+$ npm init
+```
+For this init I just entered through defaults and blank values.
 
+Note: I received an error and ran
+```bash
+$ sudo chown -R ubuntu:ubuntu /home/ubuntu/.config
+$ npm update
+$ npm init
+```
+
+Edit your package.json file with
+```json
+{
+ "name": "rest-api-tutorial",
+ "version": "1.0.0",
+ "description": "",
+ "main": "index.js",
+ "scripts": {
+   "test": "echo \"Error: no test specified\" && exit 1"
+ },
+ "repository": {
+   "type": "git",
+   "url": "git+https://github.com/makinhs/rest-api-tutorial.git"
+ },
+ "author": "",
+ "license": "ISC",
+ "bugs": {
+   "url": "https://github.com/makinhs/rest-api-tutorial/issues"
+ },
+ "homepage": "https://github.com/makinhs/rest-api-tutorial#readme",
+ "dependencies": {
+   "body-parser": "1.7.0",
+   "express": "^4.8.7",
+   "jsonwebtoken": "^7.3.0",
+   "moment": "^2.17.1",
+   "moment-timezone": "^0.5.13",
+   "mongoose": "^5.1.1",
+   "node-uuid": "^1.4.8",
+   "swagger-ui-express": "^2.0.13",
+   "sync-request": "^4.0.2"
+ }
+}
+```
+
+4. [Express](https://expressjs.com/): Fast, unopinionated, minimalist web framework for Node.js
+```bash
+$ npm install express --save
+```
+I ran into some vulnerabilities so I forced them to be fixed
+```bash
+$ npm audit fix --force
+# TRY RUNNING AGAIN
+$ npm install express --save
+```
+
+5. [mongoose](https://mongoosejs.com/) elegant mongodb object modeling for node.js
+```bash
+$ npm install mongoose
+```
+
+6. The whole fucking tutorial just fell apart. Worthless. Another couple hours of wasted frustration.
+
+7. Tried this, but still not sure how to start the service.
+```bash
+$ git clone https://github.com/makinhs/rest-api-tutorial.git
+$ npm audit fix --force
+$ npm install
+
+```
+
+## [Set Up a Node.js Application for Production](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)
+
+SCOPE
+- Node.js applications can be run at the command line, 
+- but we'll focus on running them as a service.
+- they will automatically restart on reboot or failure, and can safely be used in a production environment.
+- server will run a Node.js application managed by PM2
+- provide users with secure access to the application through an Nginx reverse proxy
+- Nginx server will offer HTTPS, using a free certificate provided by Let's Encrypt
+
+ASSUMPTIONS
+- Ubuntu 16.04 server, configured with a non-root user with sudo privileges
+- domain name pointed at your server's public IP
+- Nginx configured with SSL using Let's Encrypt
+
+1. 
 
 ## sometime...
 ```bash
