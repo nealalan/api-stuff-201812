@@ -527,9 +527,10 @@ ASSUMPTIONS
 - Nginx configured with SSL using Let's Encrypt
 - you've completed the prerequisites you will have a server serving the default Nginx placeholder page at https://example.com/
 
-1. Install Node.js
+##### 1. Install Node.js
+See above section
 
-2. Create Node.js Application
+##### 2. Create Node.js Application
 
 - First, create and open your Node.js application for editing. 
 - For this tutorial, we will use nano to edit a sample application called hello.js.
@@ -544,10 +545,11 @@ http.createServer(function (req, res) {
 }).listen(8080, 'localhost');
 console.log('Server running at http://localhost:8080/');
 ```
+
 - This Node.js application simply listens on the specified address (localhost) and port (8080), and returns "Hello World" with a 200 HTTP success code. 
 - Since we're listening on localhost, remote clients won't be able to connect to our application.
 
-3. Test application
+##### 3. Test application
 
 ```bash
 $ chmod +x ./hello.js
@@ -561,7 +563,7 @@ curl http://localhost:8080
 
 Once you're sure it's working, kill the application (if you haven't already) by pressing Ctrl+C.
 
-4. Install [PM2](https://pm2.io)
+##### 4. Install [PM2](https://pm2.io)
 
 - PM2 is a process manager for Node.js applications. 
 - PM2 provides an easy way to manage and daemonize applications (run them in the background as a service).
@@ -571,28 +573,90 @@ Once you're sure it's working, kill the application (if you haven't already) by 
 $ sudo npm install -g pm2
 ```
 
-5. Start Application with PM2
+##### 5. Start Application with PM2
 
 The first thing you will want to do is use the pm2 start command to run your application, hello.js, in the background.
 
 ```bash
 $ pm2 start hello.js
 ```
-About PM2:
-                Start and Daemonize any application:
-                $ pm2 start app.js
+Start and Daemonize any application:
+```bash          
+$ pm2 start app.js
+```
+Load Balance 4 instances of api.js:
+```bash
+$ pm2 start api.js -i 4
+```
+Monitor in production:
+```bash
+$ pm2 monitor
+```
+Make pm2 auto-boot at server restart:
+```bash
+$ pm2 startup
+```
+Also...
+```bash
+$ pm2 stop app_name_or_id
+#
+$ pm2 restart app_name_or_id
+#
+$ pm2 list
+#
+$ pm2 info example
+#
+$ pm2 monit
+# Freeze a process list on reboot via:
+$ pm2 save
+# Remove init script via:
+$ pm2 unstartup systemd
+```
 
-                Load Balance 4 instances of api.js:
-                $ pm2 start api.js -i 4
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-31%20at%2012.00.45%20AM.jpg?raw=true)
 
-                Monitor in production:
-                $ pm2 monitor
+##### 6. Add pm2 to systemd to launch on server boots
 
-                Make pm2 auto-boot at server restart:
-                $ pm2 startup
+The startup subcommand generates and configures a startup script to launch PM2 and its managed processes on server boots
 
-                To go further checkout:
-                http://pm2.io/
+```bash
+$ pm2 startup systemd
+```
+
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-31%20at%2012.06.31%20AM.jpg?raw=true)
+
+The last line of the resulting output will include a command that you must run with superuser privileges. Run the command
+
+```bash
+$ sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
+```
+
+![](https://github.com/nealalan/api-stuff-201812/blob/master/images/Screen%20Shot%202018-12-31%20at%2012.09.34%20AM.jpg?raw=true)
+
+##### 7. Set Up Nginx as a Reverse Proxy Server
+In a file within sites-available add the following location block
+
+```bash
+location /app2 {
+        proxy_pass http://localhost:8081;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+```
+
+##### 8. Implement
+Once you are done...
+
+```bash
+$ sudo nginx -t
+$ sudo systemctl restart nginx
+```
+If nginx restarts fine:
+- Add ports 8080 and 8430 to the Network ACL and the Public Subnet Security Group.
+- If the web server will not accept the traffic, restart it.
 
 ## sometime...
 ```bash
